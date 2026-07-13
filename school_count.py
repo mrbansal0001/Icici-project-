@@ -15,7 +15,7 @@ if os.path.exists(file_path):
     # The ~ symbol acts as a "NOT" operator to exclude these rows.
     # case=False ensures it catches variations like 'Government' or 'GOVERNMENT'.
     # na=False prevents errors if there are empty cells in the column.
-    df_filtered = df[~df['Management'].str.contains('government', case=False, na=False)]
+    df_filtered = df[~df['Management'].str.contains('Government|Central Govt', case=False, na=False)]
     
     # Optional: See how many rows were dropped
     print(f"Original row count: {len(df)}")

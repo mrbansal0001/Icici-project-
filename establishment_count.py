@@ -7,17 +7,12 @@ import geopandas as gpd
 import osmium
 import pandas as pd
 
-# ---------------------------------------------------------
-# PATHS
-# ---------------------------------------------------------
+
 BASE_DIR = Path(__file__).resolve().parent
 PINCODE_FILE = BASE_DIR / "Datagov_Pincode_Boundaries.geojson"
 OSM_FILE = BASE_DIR / "india-260603.osm.pbf"
 OUTPUT_FILE = BASE_DIR / "pincode_establishment_counts.csv"
 
-# ---------------------------------------------------------
-# TARGET TAGS (Updated from Image)
-# ---------------------------------------------------------
 TARGET_TAGS = {
     "amenity": {
         "atm", "bank", "bar", "bench", "bicycle_parking", "bicycle_rental",
