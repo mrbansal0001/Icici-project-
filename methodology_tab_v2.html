@@ -1,0 +1,140 @@
+<section class="view" id="view-about">
+
+  <!-- ============ HERO ============ -->
+  <div class="doc-hero">
+    <div class="eyebrow">Decoding India's Micro-Wealth</div>
+    <h1>The Affluence Index</h1>
+    <p class="lead">India has no reliable income data below the district level. So instead of asking people what they earn, this index watches what wealthy neighbourhoods <strong>do</strong> — where they invest, where they shop, where they educate their kids, where they get treated when they're sick. 11 commercial and lifestyle signals, rolled up into a single 0–100 score per pincode, tell that story at a resolution income surveys never reach.</p>
+  </div>
+
+  <!-- ============ WHY PROXIES ============ -->
+  <div class="doc-section">
+    <h2>Why Proxies, Not Income</h2>
+    <p>Every institution — a mutual fund distributor, a premium hospital, a golf club — runs its own feasibility study before opening a branch. They only show up where the economics work. A dense cluster of SEBI-registered investment advisors in a pincode isn't a guess about wealth; it's someone else's market research telling you the same thing. Stack enough of these independently-validated signals together, and the resulting picture of purchasing power is more current and more granular than any census or survey could be — updated in near-real-time by the market itself.</p>
+  </div>
+
+  <!-- ============ SCORING PIPELINE ============ -->
+  <div class="doc-section">
+    <h2>How the Score is Calculated</h2>
+    <div class="scoring-card">
+      <div class="scoring-step">
+        <div class="step-num">1</div>
+        <h4>Signal Percentiling</h4>
+        <p>Raw counts vary wildly — a corporate hub count of 0 to 500+ across ~19,300 pincodes. Rather than min-max or z-score scaling, every signal is converted to a <strong>percentile rank (0–100)</strong>, which is far more robust to the extreme outliers and heavy skew found in things like vehicle counts. A score of 95 means: more of that signal than 95% of India's pincodes.</p>
+      </div>
+      <div class="scoring-step">
+        <div class="step-num">2</div>
+        <h4>Pillar Averaging</h4>
+        <p>Correlated signals are grouped into four pillars first, and only then averaged — so one underlying idea (say, "retail presence") can't accidentally get counted three or four times just because it happens to have three or four related columns feeding it.</p>
+      </div>
+      <div class="scoring-step">
+        <div class="step-num">3</div>
+        <h4>Weighted Composite</h4>
+        <p>The four Pillar Scores are combined into the final Affluence Score using weights that start <strong>equal at 25% each</strong> — a simple, defensible baseline that's easy to explain to a non-technical stakeholder. A PCA run on the standardized raw signals is used purely as a sanity check afterward, to flag if the data itself suggests a different emphasis — it never silently overwrites the business weights.</p>
+      </div>
+      <div class="scoring-step">
+        <div class="step-num">4</div>
+        <h4>National Tiering</h4>
+        <p>The composite score is ranked nationally and bucketed into agent-facing tiers: <strong>Platinum (top 2%)</strong>, <strong>Gold (top 10%)</strong>, <strong>Silver (top 30%)</strong>, and Standard for everyone else.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FOUR PILLARS ============ -->
+  <div class="doc-section">
+    <h2>The Four Pillars of Wealth</h2>
+    <div class="pillar-grid">
+      <div class="pillar-card">
+        <h3>Financial Penetration</h3>
+        <p>Tracks the density of wealth-management professionals. Investment advisors and mutual fund distributors set up shop strictly where investable surplus already exists — dense presence means a population that actively invests, which is exactly the demographic this index is built to find.</p>
+        <div class="pillar-tags"><span>MF Distributors</span><span>Investment Advisors</span></div>
+      </div>
+      <div class="pillar-card">
+        <h3>Commercial Vibrancy</h3>
+        <p>Measures economic activity and corporate presence that drive high-income salaried employment and discretionary spending. The ratio of private-to-public bank branches is a particularly sharp cut here: private banks chase upper-middle-class density in a way public branches, which follow policy mandates, don't.</p>
+        <div class="pillar-tags"><span>Corporate Hubs</span><span>Retail Branches</span><span>Private:Public Bank Ratio</span></div>
+      </div>
+      <div class="pillar-card">
+        <h3>Lifestyle &amp; Premium</h3>
+        <p>Captures luxury and discretionary consumption. Premium grocery and pharmacy chains run serious catchment-feasibility analysis before opening; golf courses are one of the strongest single lifestyle-wealth markers anywhere in India, with membership fees running into the lakhs.</p>
+        <div class="pillar-tags"><span>Premium Retail &amp; Pharmacy</span><span>Golf Courses</span></div>
+      </div>
+      <div class="pillar-card">
+        <h3>Infrastructure &amp; Scale</h3>
+        <p>Evaluates the built environment catering to upper-middle and high-income households — premium healthcare, early-adopter technology, and general commercial density. NABH-accredited hospitals and EV charging density are both strong forward-looking proxies, since both require sustained paying demand to justify the investment.</p>
+        <div class="pillar-tags"><span>NABH Hospitals</span><span>EV Charging Points</span><span>Premium Schools</span><span>Commercial Establishments</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SIGNAL DEEP DIVE ============ -->
+  <div class="doc-section">
+    <h2>The 11 Signals Deep Dive</h2>
+    <p style="margin-bottom:16px;color:var(--slate);">20 candidate signals were evaluated during research. 11 survived into the production model on data quality, coverage, and pincode-level resolution grounds; the rest were set aside — not because they're bad proxies in theory, but because they either fail to differentiate at this granularity or aren't reliably attributable to a single pincode.</p>
+    <div class="signal-masonry" id="signal-cards-container">
+       <!-- Populated by JS on load -->
+    </div>
+  </div>
+
+  <!-- ============ VALIDATION ============ -->
+  <div class="doc-section">
+    <h2>Validation &amp; Honesty</h2>
+
+    <div class="scoring-card" style="margin-bottom:20px;">
+      <div class="scoring-step" style="grid-column: 1 / -1;">
+        <h4>The Headline Result</h4>
+        <p>State is never used as an input anywhere in the scoring pipeline — the model only ever sees pincode-level commercial and lifestyle signals. And yet, when you roll the resulting scores up by state, the ranking that falls out reconstructs India's real-world state-level wealth hierarchy almost exactly. That's the strongest evidence available that these 11 signals are capturing something real about economic geography, not noise or coincidence.</p>
+      </div>
+    </div>
+
+    <div class="scoring-card">
+      <div class="scoring-step">
+        <h4>PCA Sanity Check</h4>
+        <p>A principal component analysis is run on the standardized raw signals purely to check whether the natural variance structure of the data roughly agrees with equal 25% pillar weighting. It's diagnostic only — it flags when a rethink of weights might be warranted, but it never silently overrides the business logic.</p>
+      </div>
+      <div class="scoring-step">
+        <h4>Known-Pincode Face Validity</h4>
+        <p>A small set of pincodes with independently well-known real-world affluence — premium urban cores expected to score very high, and remote rural pincodes expected to score low — are checked against the model's output as a manual gut-check before anything ships. This is a face-validity spot check, not a statistical proof, and is treated that way.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ LIMITATIONS ============ -->
+  <div class="doc-section">
+    <h2>Limitations to Keep in Mind</h2>
+    <div class="scoring-card">
+      <div class="scoring-step">
+        <h4>Proxy, Not Ground Truth</h4>
+        <p>This is a footprint-based estimate of purchasing power, not measured income. Two pincodes with identical scores can still have very different real income distributions underneath.</p>
+      </div>
+      <div class="scoring-step">
+        <h4>Sparse-Data Pincodes</h4>
+        <p>Very low-population or newly-created pincodes can show noisy scores simply because there isn't enough commercial activity yet to differentiate them — low signal density isn't always the same as low affluence.</p>
+      </div>
+      <div class="scoring-step">
+        <h4>Equal Weights Are a Baseline</h4>
+        <p>The 25%-per-pillar weighting is a defensible starting point, not a proven optimum. Treat tier boundaries as directional guidance for prioritization, not a precise ranking to the decimal point.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ AGENT PLAYBOOK ============ -->
+  <div class="doc-section">
+    <h2>Agent Playbook</h2>
+    <div class="playbook-grid">
+      <div class="play-card">
+        <h4>Play 1: The Cold Start</h4>
+        <p>Opening a new territory? Don't guess. Sort by Affluence Score in the Explorer tab to instantly identify the top 5 micro-markets in any tier-2 city.</p>
+      </div>
+      <div class="play-card">
+        <h4>Play 2: The Lookalike Strategy</h4>
+        <p>Found one pincode converting well? Use the Lookalike Finder to surface pincodes with a similar pillar signature elsewhere in the country — same underlying wealth profile, untapped territory.</p>
+      </div>
+      <div class="play-card">
+        <h4>Play 3: Watchlist Discipline</h4>
+        <p>Use the CRM-style watchlist to track promising Silver-tier pincodes that are trending toward Gold, so you're first in when they cross the threshold, not last.</p>
+      </div>
+    </div>
+  </div>
+
+</section>

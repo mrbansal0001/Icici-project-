@@ -1,0 +1,14 @@
+const puppeteer = require('puppeteer');
+
+(async () => {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  
+  page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+  page.on('pageerror', error => console.log('PAGE ERROR:', error.message));
+  page.on('requestfailed', request => console.log('REQUEST FAILED:', request.url(), request.failure().errorText));
+
+  await page.goto('file:///Users/tanishbansal/Projects/icici_bank_signals/pincode_affluence_dashboard_v2.html', {waitUntil: 'networkidle2'});
+  
+  await browser.close();
+})();

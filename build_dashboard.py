@@ -39,6 +39,16 @@ pin_state["statename"] = (
 
 df["pincode"] = df["pincode"].astype(int)
 df = df.merge(pin_state, on="pincode", how="left")
+
+# Add lat/lon from auth list (first occurrence per pincode)
+pin_coords = (
+    auth[["pincode", "latitude", "longitude"]]
+    .dropna(subset=["latitude","longitude"])
+    .drop_duplicates(subset="pincode")
+    .copy()
+)
+pin_coords["pincode"] = pin_coords["pincode"].astype(int)
+df = df.merge(pin_coords, on="pincode", how="left")
 df["statename"] = df["statename"].fillna("Unknown")
 
 # ── 3. Build sorted states index ──────────────────────────────────────────
@@ -72,9 +82,10 @@ for _, r in df.iterrows():
         "gc":  int(r.get("Golf_Course_Count", 0)),
         "hc":  int(r.get("nabh_hospital_count", 0)),
         "ev":  int(r.get("ev_charging_station_count", 0)),
-        "vc":  int(r.get("distributed_vehicle_count", 0)),
         "sch": int(r.get("distributed_school_count", 0)),
         "est": int(r.get("establishment_count", 0)),
+        "lat": round(float(r["latitude"]), 4) if r["latitude"] == r["latitude"] else None,
+        "lon": round(float(r["longitude"]), 4) if r["longitude"] == r["longitude"] else None,
     }
     rows.append(row)
 
